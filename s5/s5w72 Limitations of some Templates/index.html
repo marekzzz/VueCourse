@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<div id="app1">
+    <h1 ref="heading">{{ title }}</h1>
+    <button v-on:click="show" ref="myButton">Show Paragraph</button>
+    <p v-if="showParagraph">This is not always visible</p>
+</div>
+
+<div id="app2">
+    <h1>{{ title }}</h1>
+    <button @click="onChange">Change something in Vue 1</button>
+</div>
+
+<div id="app3">
+    
+</div>
+<!--<hello></hello>-->
+<!--<hello></hello>-->
+<!--<div class="hello"></div>-->
+<!--<div class="hello"></div>-->
+
+<script>
+    var data = {title: 'The VueJS Instance',
+      showParagraph: false};
+
+    var vm1 = new Vue({
+
+        data: data,
+        methods: {
+            show: function() {
+                this.showParagraph = true;
+                this.updateTitle('The VueJS Instance (Updated)')
+              console.log(this.$refs.myButton);
+              this.$refs.myButton.innerText = 'Test';
+            },
+            updateTitle: function(title) {
+                this.title = title;
+            }
+        },
+        computed: {
+            lowercaseTitle: function() {
+                return this.title.toLowerCase();
+            }
+        },
+        watch: {
+            title: function(value) {
+                alert('Title changed, new value: ' + value);
+            }
+        }
+    });
+
+    vm1.$mount('#app1');
+
+    console.log(vm1.title);
+    console.log(vm1.$data.title);
+    console.log(vm1.$data === data);
+    vm1.$refs.heading.innerText = 'Something else';
+
+    setTimeout(function () {
+        vm1.title = 'Changed by Timer';
+        vm1.show();
+    }, 3000);
+
+    var vm2 = new Vue({
+        el:'#app2',
+        data: {
+            title: 'The second Instance'
+        },
+        methods : {
+            onChange : function () {
+                vm1.title = 'Changed!';
+            }
+        }
+    })
+
+    var vm3 = new Vue({
+      template: '<h1>Hello!</h1>'
+    });
+
+    vm3.$mount();
+    document.getElementById('app3').appendChild(vm3.$el);
+
+</script>
+</body>
+</html>
