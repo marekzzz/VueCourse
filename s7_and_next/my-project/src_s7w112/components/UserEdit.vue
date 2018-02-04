@@ -1,0 +1,31 @@
+<template>
+    <div class="component">
+        <h3>You may edit the User here</h3>
+        <p>Edit me!</p>
+        <p>User Age {{localAge}}</p>
+        <button @click="editAge">Edit age</button>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: ['userAge'],
+        data: function () {
+            return {
+                localAge: this.userAge
+            };
+        },
+        methods: {
+            editAge() {
+                this.localAge = 30;
+                this.$emit('ageWasEdited', this.localAge);
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    div {
+        background-color: lightgreen;
+    }
+</style>
